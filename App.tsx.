@@ -1,0 +1,219 @@
+
+import { useState, useRef } from "react";
+import "./App.css";
+
+function App() {
+  const [video, setVideo] = useState<File | null>(null);
+  const [videoURL, setVideoURL] = useState("");
+  const [style, setStyle] = useState("Gaming");
+  const [mood, setMood] = useState("Hype");
+  const [instructions, setInstructions] = useState("");
+  const [tab, setTab] = useState("AI Editor");
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  function handleVideo(file?: File) {
+    if (!file) return;
+    if (!file.type.startsWith("video/")) {
+      alert("Please select a video file.");
+      return;
+    }
+
+    if (videoURL) URL.revokeObjectURL(videoURL);
+
+    setVideo(file);
+    setVideoURL(URL.createObjectURL(file));
+  }
+
+  return (
+    <div className="app">
+      <aside className="sidebar">
+        <div className="brand">
+          <div className="brand-icon">R</div>
+          <div>
+            <strong>ROXCUT</strong>
+            <small>AI VIDEO STUDIO</small>
+          </div>
+        </div>
+
+        <div className="nav-label">WORKSPACE</div>
+
+        {["AI Editor", "Projects", "Templates", "My Styles"].map((item) => (
+          <button
+            key={item}
+            className={`nav-item ${tab === item ? "active" : ""}`}
+            onClick={() => setTab(item)}
+          >
+            <span>{item === "AI Editor" ? "✦" : item === "Projects" ? "▣" : item === "Templates" ? "◇" : "◈"}</span>
+            {item}
+          </button>
+        ))}
+
+        <div className="sidebar-bottom">
+          <div className="creator-card">
+            <div className="creator-icon">AI</div>
+            <div>
+              <strong>AI CREATOR</strong>
+              <small>Editing assistant</small>
+            </div>
+          </div>
+          <div className="version">ROXCUT AI • PREVIEW 0.1</div>
+        </div>
+      </aside>
+
+      <main className="main">
+        <header className="topbar">
+          <div>
+            <div className="breadcrumb">WORKSPACE / VIDEO EDITOR</div>
+            <h1>AI Video Editor</h1>
+          </div>
+          <button className="export-button" onClick={() => alert("Export tools will be added in a future milestone.")}>
+            ↗ Export
+          </button>
+        </header>
+
+        <div className="workspace">
+          <section className="editor-area">
+            <div className="preview-header">
+              <span>VIDEO PREVIEW</span>
+              <span className="preview-format">16:9 • ORIGINAL</span>
+            </div>
+
+            <div className="preview">
+              {videoURL ? (
+                <video src={videoURL} controls playsInline />
+              ) : (
+                <div className="empty-preview">
+                  <div className="play-symbol">▶</div>
+                  <h2>Your video preview</h2>
+                  <p>Import footage to start editing</p>
+                  <button className="upload-button" onClick={() => fileRef.current?.click()}>
+                    ＋ Import video
+                  </button>
+                </div>
+              )}
+            </div>
+
+            <div className="timeline-header">
+              <div>
+                <strong>TIMELINE</strong>
+                <span className="timeline-sub"> {video ? video.name : "No media"}</span>
+              </div>
+              <div className="timeline-tools">
+                <button>−</button>
+                <button>+</button>
+              </div>
+            </div>
+
+            <div className="timeline">
+              <div className="track-label">VIDEO</div>
+              <div className="track">
+                {video && (
+                  <div className="clip">
+                    <span>🎬 {video.name}</span>
+                  </div>
+                )}
+              </div>
+
+              <div className="track-label">AUDIO</div>
+              <div className="track audio-track">
+                <span className="track-placeholder">Music and sound effects</span>
+              </div>
+
+              <div className="track-label">TEXT</div>
+              <div className="track text-track">
+                <span className="track-placeholder">Captions and titles</span>
+              </div>
+            </div>
+          </section>
+
+          <aside className="ai-panel">
+            <div className="panel-title">
+              <div className="sparkle">✦</div>
+              <div>
+                <h2>AI Auto Editor</h2>
+                <p>Transform your raw footage</p>
+              </div>
+            </div>
+
+            <div className="panel-section">
+              <label>EDITING STYLE</label>
+              <div className="style-grid">
+                {["Gaming", "Phonk", "Cinematic", "Comedy", "Shorts", "Custom"].map((s) => (
+                  <button
+                    key={s}
+                    className={`style-option ${style === s ? "selected" : ""}`}
+                    onClick={() => setStyle(s)}
+                  >
+                    {s === "Gaming" ? "🎮" : s === "Phonk" ? "🔥" : s === "Cinematic" ? "🎬" : s === "Comedy" ? "😂" : s === "Shorts" ? "⚡" : "✦"}
+                    <span>{s}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="panel-section">
+              <label>VIDEO MOOD</label>
+              <select value={mood} onChange={(e) => setMood(e.target.value)}>
+                <option>Hype</option>
+                <option>Funny</option>
+                <option>Chill</option>
+                <option>Dramatic</option>
+                <option>Aggressive</option>
+                <option>Emotional</option>
+                <option>Clean</option>
+              </select>
+            </div>
+
+            <div className="panel-section">
+              <label>AI INSTRUCTIONS</label>
+              <textarea
+                value={instructions}
+                onChange={(e) => setInstructions(e.target.value)}
+                placeholder="Describe how you want your video edited..."
+              />
+            </div>
+
+            <div className="ai-settings">
+              <div className="setting-row">
+                <span>Auto captions</span>
+                <span className="toggle active">ON</span>
+              </div>
+              <div className="setting-row">
+                <span>Auto colour</span>
+                <span className="toggle active">ON</span>
+              </div>
+              <div className="setting-row">
+                <span>Auto sound design</span>
+                <span className="toggle">OFF</span>
+              </div>
+              <div className="setting-row">
+                <span>Smart cuts</span>
+                <span className="toggle active">ON</span>
+              </div>
+            </div>
+
+            <button
+              className="generate-button"
+              onClick={() => alert("AI editing engine will be connected in the next development stage.")}
+            >
+              ✦ Generate AI Edit
+            </button>
+            <p className="panel-footnote">
+              Selected style: {style} · Mood: {mood}
+            </p>
+          </aside>
+        </div>
+      </main>
+
+      <input
+        ref={fileRef}
+        type="file"
+        accept="video/*"
+        hidden
+        onChange={(e) => handleVideo(e.target.files?.[0])}
+      />
+    </div>
+  );
+}
+
+export default App;
