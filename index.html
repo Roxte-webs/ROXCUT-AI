@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ROXCUT AI — Video Editor</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+<header class="topbar">
+  <div class="brand"><div class="brandmark">R</div><span>ROXCUT <b>AI</b></span><span class="version">PRO STUDIO</span></div>
+  <div class="project-name"><span class="dot"></span><input id="projectName" value="Untitled project" aria-label="Project name"></div>
+  <div class="top-actions"><button class="btn ghost" id="undoBtn" title="Undo">↶</button><button class="btn ghost" id="redoBtn" title="Redo">↷</button><button class="btn ghost" id="saveBtn">Save project</button><button class="btn export" id="exportBtn">Export <span>↗</span></button></div>
+</header>
+<div class="main-layout">
+  <aside class="leftbar">
+    <button class="navitem active" data-panel="media"><span>▧</span>Media</button>
+    <button class="navitem" data-panel="audio"><span>♫</span>Audio</button>
+    <button class="navitem" data-panel="text"><span>T</span>Text</button>
+    <button class="navitem" data-panel="effects"><span>✦</span>Effects</button>
+    <button class="navitem" data-panel="filters"><span>◐</span>Filters</button>
+    <button class="navitem" data-panel="transitions"><span>◫</span>Transitions</button>
+    <button class="navitem" data-panel="ai"><span>✧</span>AI tools</button>
+  </aside>
+  <section class="asset-panel" id="assetPanel">
+    <div class="panel-head"><h2 id="panelTitle">Media</h2><button class="iconbtn" id="collapsePanel">−</button></div>
+    <div class="panel-content" id="panelContent"></div>
+  </section>
+  <section class="preview-area">
+    <div class="preview-toolbar"><div class="preview-label"><span class="live-dot"></span> Preview</div><div class="preview-controls"><select id="ratioSelect"><option value="16:9">16:9</option><option value="9:16">9:16 Shorts</option><option value="1:1">1:1</option><option value="4:5">4:5</option></select><select id="previewQuality"><option>Fit</option><option>50%</option><option>75%</option><option>100%</option></select><button class="iconbtn" id="fullscreenBtn">⛶</button></div></div>
+    <div class="stage-wrap"><div class="stage" id="stage"><canvas id="previewCanvas" width="1280" height="720"></canvas><div class="stage-empty" id="emptyState"><div class="upload-icon">↑</div><h3>Drop your footage here</h3><p>Import video to start editing</p><button class="btn primary" id="emptyImport">Import media</button></div></div></div>
+    <div class="playback"><button class="iconbtn" id="jumpStart">|◀</button><button class="iconbtn" id="stepBack">◀</button><button class="playbtn" id="playBtn">▶</button><button class="iconbtn" id="stepForward">▶|</button><button class="iconbtn" id="jumpEnd">▶|</button><div class="timecode"><span id="currentTime">00:00:00</span><span class="sep">/</span><span id="totalTime">00:00:00</span></div><div class="playback-spacer"></div><button class="iconbtn" id="snapshotBtn" title="Snapshot">▣</button><button class="iconbtn" id="safeAreaBtn" title="Toggle safe area">⌗</button></div>
+  </section>
+  <aside class="inspector" id="inspector">
+    <div class="panel-head"><h2>Properties</h2><span class="tiny-label" id="selectionLabel">PROJECT</span></div>
+    <div class="inspector-tabs"><button class="active" data-inspector="video">Video</button><button data-inspector="audio">Audio</button><button data-inspector="text">Text</button><button data-inspector="adjust">Adjust</button></div>
+    <div class="inspector-content" id="inspectorContent"></div>
+  </aside>
+</div>
+<section class="timeline-section">
+  <div class="timeline-toolbar"><div class="timeline-left"><button class="toolbtn active" data-tool="select">↖ Select</button><button class="toolbtn" data-tool="cut">✂ Split</button><button class="toolbtn" id="addTextTimeline">T Text</button><button class="toolbtn" id="addCaptionTimeline">CC Caption</button><button class="toolbtn" id="deleteClipBtn">⌫ Delete</button><span class="divider"></span><button class="toolbtn" id="snapBtn">♧ Snap</button></div><div class="timeline-right"><button class="iconbtn" id="zoomOut">−</button><input type="range" id="timelineZoom" min="20" max="150" value="60"><button class="iconbtn" id="zoomIn">+</button><button class="iconbtn" id="fitTimeline">⤢</button></div></div>
+  <div class="timeline-scroll" id="timelineScroll"><div class="timeline" id="timeline"><div class="ruler" id="ruler"></div><div class="track-labels"><div class="track-label main"><span>▣</span> Video</div><div class="track-label"><span>T</span> Text</div><div class="track-label"><span>♫</span> Audio</div><div class="track-label"><span>♫</span> Music</div></div><div class="tracks" id="tracks"><div class="track video-track" id="videoTrack"></div><div class="track text-track" id="textTrack"></div><div class="track audio-track" id="audioTrack"></div><div class="track music-track" id="musicTrack"></div></div><div class="playhead" id="playhead"><div class="playhead-head"></div></div></div></div>
+  <div class="timeline-footer"><span id="timelineStatus">Import media to begin</span><span>00:00:00:00</span></div>
+</section>
+<video id="sourceVideo" playsinline crossorigin="anonymous"></video><audio id="musicAudio" loop></audio>
+<div class="modal-backdrop hidden" id="modal"><div class="modal"><div class="modal-head"><h2 id="modalTitle">Export</h2><button class="iconbtn" id="closeModal">×</button></div><div id="modalBody"></div></div></div>
+<div class="toast" id="toast"></div>
+</div>
+<script src="app.js"></script>
+</body></html>
